@@ -6,11 +6,31 @@ K-meansクラスタリングを使用した簡単なクラスタ分析の実装�
 import logging
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from sklearn.datasets import load_iris, make_blobs
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score, calinski_harabasz_score
 from sklearn.decomposition import PCA
+import matplotlib.font_manager as fm
+import os
+
+plt.rcParams['font.family'] = 'sans-serif'
+font_candidates = ['IPAGothic', 'IPAPGothic', 'VL Gothic', 'Noto Sans CJK JP', 
+                  'Meiryo', 'MS Gothic', 'Hiragino Sans GB', 'TakaoGothic']
+
+font_found = False
+for font in font_candidates:
+    if any(f.name == font for f in fm.fontManager.ttflist):
+        plt.rcParams['font.sans-serif'] = [font] + plt.rcParams['font.sans-serif']
+        logging.info(f"日本語フォント '{font}' を使用します")
+        font_found = True
+        break
+
+if not font_found:
+    logging.warning("日本語フォントが見つかりませんでした。代替設定を使用します。")
+    plt.rcParams['font.sans-serif'] = ['DejaVu Sans'] + plt.rcParams['font.sans-serif']
+    plt.rcParams['axes.unicode_minus'] = False
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
